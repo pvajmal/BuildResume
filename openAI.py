@@ -1,8 +1,9 @@
 
 import os
 import openai
+import streamlit as st
 class CallAI:
-    def getAI(self, text, key):   
+    def getAI(self, text):   
         api_key = os.environ.get("OPENAI_API_KEY")
 
         # Use the API key
@@ -13,8 +14,8 @@ class CallAI:
 
         # Use the API key
 
-        
-        print(openai.api.key)
+        openai.api_key = st.secrets["OPENAI_API_KEY"]
+
 
         def generate_text(prompt):
             completions = openai.Completion.create(
