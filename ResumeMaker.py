@@ -89,7 +89,6 @@ st.title("Resume Generator")
 # Get user inputs
 data = {}
 data["Name"] = st.text_input("Enter your name:")
-data["Objective"] = AI.getAI('Rephrase following to add in resume summary section in full sentance : '+st.text_input("Enter your Career objective:"))
 data["Address"] = st.text_input("Enter your address:")
 data["Phone"] = st.text_input("Enter your phone number:")
 data["Email"] = st.text_input("Enter your email:")
@@ -97,7 +96,12 @@ data["JOBTITLE"] = st.text_input("Enter your job title:")
 data["COMPANY"] = st.text_input("Enter your company name:")
 data["ExpPlace"] = st.text_input("Enter your experience place:")
 data["ExpDuration"] = st.text_input("Enter your experience duration:")
-data["job description"] = AI.getAI('Rephrase following to add in Resume experience in bulletin points : '+st.text_input("Enter your job description:"))
+try:
+    data["Objective"] = AI.getAI('Rephrase following to add in resume summary section in full sentance : '+st.text_input("Enter your Career objective (Rephrase using AI):"))
+    data["job description"] = AI.getAI('Rephrase following to add in Resume experience in bulletin points : '+st.text_input("Enter your job description (Rephrase using AI):"))
+except:
+    data["Objective"] = st.text_input("Enter your Career objective:")
+    data["job description"] = st.text_input("Enter your job description:")
 data["Technical Skills"] = st.text_input("Enter your technical skills:")
 data["SSkills"] = st.text_input("Enter your soft skills:")
 data["College"] = st.text_input("Enter your college name:")
@@ -117,12 +121,12 @@ if st.button('Generate Resume'):
     resume.create_resume(template_file, data)
     #resume.convert_docx_to_pdf('Ajmal.docx', "output.pdf")
 
-resume_file = current_dir /  str('Output/'+data['Name']+'_Resume.docx')
-with open(resume_file, "rb") as word_file:
-    word_byte = word_file.read()
-st.download_button(
-    label=" 📄 Download Word Document",
-    data=word_byte,
-    file_name=resume_file.name,
-    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-)
+    resume_file = current_dir /  str('Output/'+data['Name']+'_Resume.docx')
+    with open(resume_file, "rb") as word_file:
+        word_byte = word_file.read()
+    st.download_button(
+        label=" 📄 Download Word Document",
+        data=word_byte,
+        file_name=resume_file.name,
+        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    )
