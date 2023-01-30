@@ -11,11 +11,12 @@ import requests
 from collections import defaultdict
 current_dir = Path(__file__).parent
 
-#Object to call AI to rephrase the text input
+# Object to call AI to rephrase the text input
 AI = CallAI()
 
+
 class CreateResume:
-    def create_resume(self,template_file, data):
+    def create_resume(self, template_file, data):
         # Open the template file
         doc = Document(template_file)
 
@@ -41,17 +42,16 @@ class CreateResume:
             "{{CollegeDuration}}": "CollegeDuration",
             "{{Achieve}}": "Achievement"
         }
-        
+
         # Iterate through the document's paragraphs and replace placeholders
         for para in doc.paragraphs:
             for run in para.runs:
                 for key, value in mapping.items():
                     if key in run.text:
                         run.text = run.text.replace(key, data[value])
-                    
-                        
+
         # Save the document with a new file name
-        doc.save(current_dir /  str('Output/'+data['Name']+'_Resume.docx'))
+        doc.save(current_dir / str('output/'+data['Name']+'_Resume.docx'))
 
     # Convert to pdf
     def convert_docx_to_pdf(self, docx_file, pdf_file):
@@ -59,14 +59,12 @@ class CreateResume:
         pdfkit.from_string(doc.text, pdf_file)
 
 
-
-
 data = defaultdict(str)
 
 
-
 st.title("Resume Generator")
-options = ["Basic Details", "Experience", "Academic info", "Skills and Achievements"]
+options = ["Basic Details", "Experience",
+           "Academic info", "Skills and Achievements"]
 selected_option = st.selectbox("Select Category", options)
 # Get user inputs
 
@@ -83,12 +81,16 @@ if selected_option == "Experience":
     data["ExpPlace"] = st.text_input("Enter your experience place:")
     data["ExpDuration"] = st.text_input("Enter your experience duration:")
     try:
-        data["Objective"] = st.text_input("Enter your Career objective (AI to Rephrase):")
-        data["job description"] = st.text_input("Enter your job description (AI to Rephrase):")
+        data["Objective"] = st.text_input(
+            "Enter your Career objective (AI to Rephrase):")
+        data["job description"] = st.text_input(
+            "Enter your job description (AI to Rephrase):")
         if data["Objective"]:
-            data["Objective"] = AI.getAI('Generate a career objective statement for a resume, focusing on the career goals and aspirations, job title and industry, and key skills and qualifications'+data["Objective"])
+            data["Objective"] = AI.getAI(
+                'Generate a career objective statement for a resume, focusing on the career goals and aspirations, job title and industry, and key skills and qualifications'+data["Objective"])
         if data["job description"]:
-            data["job description"] = AI.getAI('Rephrase following to add in Resume experience in bulletin points : '+data["job description"])
+            data["job description"] = AI.getAI(
+                'Rephrase following to add in Resume experience in bulletin points : '+data["job description"])
     except:
         data["Objective"] = st.text_input("Enter your Career objective:")
         data["job description"] = st.text_input("Enter your job description:")
@@ -106,7 +108,7 @@ if selected_option == "Academic info":
     data["CollegeDuration"] = st.text_input("Enter your college duration:")
 
 
-template_file = current_dir/ "resume_template.docx"
+template_file = current_dir / "resume_template.docx"
 
 print(data)
 
@@ -115,7 +117,7 @@ if st.button('Generate Resume'):
     resume.create_resume(template_file, data)
     #resume.convert_docx_to_pdf('Ajmal.docx', "output.pdf")
 
-    resume_file = current_dir /  str('Output/'+data['Name']+'_Resume.docx')
+    resume_file = current_dir / str('output/'+data['Name']+'_Resume.docx')
     with open(resume_file, "rb") as word_file:
         word_byte = word_file.read()
     st.download_button(
