@@ -70,7 +70,7 @@ selected_option = st.selectbox("Select Category", options)
 # Get user inputs
 
 if selected_option == "Basic Details":
-    data["Name"] = st.text_input("Enter your name:")
+    data["Name"].append(st.text_input("Enter your name:"))
     data["Address"] = st.text_input("Enter your address:")
     data["Phone"] = st.text_input("Enter your phone number:")
     data["Email"] = st.text_input("Enter your email:")
