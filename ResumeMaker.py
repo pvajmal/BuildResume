@@ -48,6 +48,7 @@ class CreateResume:
                 for key, value in mapping.items():
                     if key in run.text:
                         run.text = run.text.replace(key, data[value])
+                    
                         
         # Save the document with a new file name
         doc.save(current_dir /  str('Output/'+data['Name']+'_Resume.docx'))
@@ -60,7 +61,7 @@ class CreateResume:
 
 
 
-data = defaultdict(list)
+data = defaultdict(str)
 
 
 
@@ -70,7 +71,7 @@ selected_option = st.selectbox("Select Category", options)
 # Get user inputs
 
 if selected_option == "Basic Details":
-    data["Name"].append(st.text_input("Enter your name:"))
+    data["Name"] = (st.text_input("Enter your name:"))
     data["Address"] = st.text_input("Enter your address:")
     data["Phone"] = st.text_input("Enter your phone number:")
     data["Email"] = st.text_input("Enter your email:")
@@ -82,10 +83,10 @@ if selected_option == "Experience":
     data["ExpPlace"] = st.text_input("Enter your experience place:")
     data["ExpDuration"] = st.text_input("Enter your experience duration:")
     try:
-        data["Objective"] = st.text_input("Enter your Career objective:")
-        data["job description"] = st.text_input("Enter your job description:")
+        data["Objective"] = st.text_input("Enter your Career objective (AI to Rephrase):")
+        data["job description"] = st.text_input("Enter your job description (AI to Rephrase):")
         if data["Objective"]:
-            data["Objective"] = AI.getAI('Rephrase following to insert in resume Career objective section to get attention from recruiter: '+data["Objective"])
+            data["Objective"] = AI.getAI('Generate a career objective statement for a resume, focusing on the individuals career goals and aspirations, job title and industry, and key skills and qualifications.'+data["Objective"])
         if data["job description"]:
             data["job description"] = AI.getAI('Rephrase following to add in Resume experience in bulletin points : '+data["job description"])
     except:
