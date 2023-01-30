@@ -85,7 +85,8 @@ data = {
 
 
 st.title("Resume Generator")
-
+options = ["Basic Details", "Experience", "Academic info"]
+selected_option = st.selectbox("Select an option", options)
 # Get user inputs
 data = {}
 data["Name"] = st.text_input("Enter your name:")
