@@ -104,7 +104,7 @@ if selected_option == "Experience":
         data["Objective"] = st.text_input("Enter your Career objective:")
         data["job description"] = st.text_input("Enter your job description:")
         if data["Objective"]:
-            data["Objective"] = AI.getAI('Rephrase following to add in resume summary section in full sentance : '+data["Objective"])
+            data["Objective"] = AI.getAI('Rephrase following to insert in resume Career objective section to get attention from recruiter: '+data["Objective"])
         if data["job description"]:
             data["job description"] = AI.getAI('Rephrase following to add in Resume experience in bulletin points : '+data["job description"])
     except:
