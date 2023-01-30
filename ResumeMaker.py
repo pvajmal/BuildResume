@@ -85,7 +85,7 @@ data = {
 
 
 st.title("Resume Generator")
-options = ["Basic Details", "Experience", "Academic info"]
+options = ["Basic Details", "Experience", "Academic info", "Skills and Achievements"]
 selected_option = st.selectbox("Select Category", options)
 # Get user inputs
 data = {}
@@ -106,9 +106,11 @@ if selected_option == "Experience":
     except:
         data["Objective"] = st.text_input("Enter your Career objective:")
         data["job description"] = st.text_input("Enter your job description:")
-data["Technical Skills"] = st.text_input("Enter your technical skills:")
-data["SSkills"] = st.text_input("Enter your soft skills:")
 
+if selected_option == "Skills and Achievements":
+    data["Technical Skills"] = st.text_input("Enter your technical skills:")
+    data["SSkills"] = st.text_input("Enter your soft skills:")
+    data["Achievement"] = st.text_input("Enter your achievements:")
 if selected_option == "Academic info":
     data["College"] = st.text_input("Enter your college name:")
     data["Degree"] = st.text_input("Enter your degree:")
@@ -116,7 +118,7 @@ if selected_option == "Academic info":
     data["CGPA"] = st.text_input("Enter your CGPA:")
     data["CollegeDetails"] = st.text_input("Enter your college details:")
     data["CollegeDuration"] = st.text_input("Enter your college duration:")
-data["Achievement"] = st.text_input("Enter your achievements:")
+
 
 template_file = current_dir/ "resume_template.docx"
 
