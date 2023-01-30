@@ -2,7 +2,7 @@
 import os
 import openai
 class CallAI:
-    def getAI(self, text):   
+    def getAI(self, text, key):   
         api_key = os.environ.get("OPENAI_API_KEY")
 
         # Use the API key
@@ -13,7 +13,7 @@ class CallAI:
 
         # Use the API key
 
-        openai.api_key = st.secrets["OPENAI_API_KEY"]
+        
         print(openai.api.key)
 
         def generate_text(prompt):
