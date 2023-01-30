@@ -8,7 +8,7 @@ from openAI import CallAI
 from pathlib import Path
 import streamlit as st
 import requests
-
+from collections import defaultdict
 current_dir = Path(__file__).parent
 
 #Object to call AI to rephrase the text input
@@ -60,27 +60,7 @@ class CreateResume:
 
 
 
-data = {
-    "Name": "",
-    "Objective": "",
-    "Address": "",
-    "Phone": "",
-    "Email": "",
-    "JOBTITLE": "",
-    "COMPANY": "",
-    "ExpPlace": "",
-    "ExpDuration": "",
-    "job description": "",
-    "Technical Skills": "",
-    "SSkills": "",
-    "College": "",
-    "Degree": "",
-    "CollegePlace": "",
-    "CGPA": "",
-    "CollegeDetails": "",
-    "CollegeDuration": "",
-    "Achievement": ""
-}
+data = defaultdict(list)
 
 
 
@@ -95,7 +75,8 @@ if selected_option == "Basic Details":
     data["Phone"] = st.text_input("Enter your phone number:")
     data["Email"] = st.text_input("Enter your email:")
 
-while selected_option == "Experience":
+if selected_option == "Experience":
+
     data["JOBTITLE"] = st.text_input("Enter your job title:")
     data["COMPANY"] = st.text_input("Enter your company name:")
     data["ExpPlace"] = st.text_input("Enter your experience place:")
