@@ -107,7 +107,7 @@ if selected_option == "Academic info":
 
 template_file = current_dir/ "resume_template.docx"
 
-
+print(data)
 
 if st.button('Generate Resume'):
     resume = CreateResume()
