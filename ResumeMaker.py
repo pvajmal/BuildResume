@@ -94,24 +94,28 @@ if selected_option == "Basic Details":
     data["Address"] = st.text_input("Enter your address:")
     data["Phone"] = st.text_input("Enter your phone number:")
     data["Email"] = st.text_input("Enter your email:")
-data["JOBTITLE"] = st.text_input("Enter your job title:")
-data["COMPANY"] = st.text_input("Enter your company name:")
-data["ExpPlace"] = st.text_input("Enter your experience place:")
-data["ExpDuration"] = st.text_input("Enter your experience duration:")
-try:
-    data["Objective"] = AI.getAI('Rephrase following to add in resume summary section in full sentance : '+st.text_input("Enter your Career objective (Rephrase using AI):"))
-    data["job description"] = AI.getAI('Rephrase following to add in Resume experience in bulletin points : '+st.text_input("Enter your job description (Rephrase using AI):"))
-except:
-    data["Objective"] = st.text_input("Enter your Career objective:")
-    data["job description"] = st.text_input("Enter your job description:")
+
+if selected_option == "Experience":
+    data["JOBTITLE"] = st.text_input("Enter your job title:")
+    data["COMPANY"] = st.text_input("Enter your company name:")
+    data["ExpPlace"] = st.text_input("Enter your experience place:")
+    data["ExpDuration"] = st.text_input("Enter your experience duration:")
+    try:
+        data["Objective"] = AI.getAI('Rephrase following to add in resume summary section in full sentance : '+st.text_input("Enter your Career objective (Rephrase using AI):"))
+        data["job description"] = AI.getAI('Rephrase following to add in Resume experience in bulletin points : '+st.text_input("Enter your job description (Rephrase using AI):"))
+    except:
+        data["Objective"] = st.text_input("Enter your Career objective:")
+        data["job description"] = st.text_input("Enter your job description:")
 data["Technical Skills"] = st.text_input("Enter your technical skills:")
 data["SSkills"] = st.text_input("Enter your soft skills:")
-data["College"] = st.text_input("Enter your college name:")
-data["Degree"] = st.text_input("Enter your degree:")
-data["CollegePlace"] = st.text_input("Enter your college place:")
-data["CGPA"] = st.text_input("Enter your CGPA:")
-data["CollegeDetails"] = st.text_input("Enter your college details:")
-data["CollegeDuration"] = st.text_input("Enter your college duration:")
+
+if selected_option == "Academic info":
+    data["College"] = st.text_input("Enter your college name:")
+    data["Degree"] = st.text_input("Enter your degree:")
+    data["CollegePlace"] = st.text_input("Enter your college place:")
+    data["CGPA"] = st.text_input("Enter your CGPA:")
+    data["CollegeDetails"] = st.text_input("Enter your college details:")
+    data["CollegeDuration"] = st.text_input("Enter your college duration:")
 data["Achievement"] = st.text_input("Enter your achievements:")
 
 template_file = current_dir/ "resume_template.docx"
