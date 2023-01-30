@@ -13,11 +13,12 @@ import json
 
 current_dir = Path(__file__).parent
 
-#Object to call AI to rephrase the text input
+# Object to call AI to rephrase the text input
 AI = CallAI()
 
+
 class CreateResume:
-    def create_resume(self,template_file, data):
+    def create_resume(self, template_file, data):
         # Open the template file
         doc = Document(template_file)
 
@@ -45,16 +46,19 @@ class CreateResume:
             "{{Achieve}}": "Achievement"
         }
 
+
         # Iterate through the document's paragraphs
         for para in doc.paragraphs:
             for run in para.runs:
                 for key, value in mapping.items():
                     if key in run.text:
+
                         run.text = run.text.replace(key, data.get(value, ''))
 
         # Save the document with a new file name
-        file_path = os.path.join('Output', f"{data['Name']}_Resume.docx")
+        file_path = os.path.join('output', f"{data['Name']}_Resume.docx")
         doc.save(file_path)
+
 
     # Convert to pdf
     def convert_docx_to_pdf(self, docx_file, pdf_file):
@@ -68,6 +72,7 @@ class CreateResume:
 def save_data(data):
     with open("data.json", "w") as f:
         json.dump(data, f)
+
 
 def load_data():
     try:
