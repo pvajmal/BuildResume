@@ -86,13 +86,14 @@ data = {
 
 st.title("Resume Generator")
 options = ["Basic Details", "Experience", "Academic info"]
-selected_option = st.selectbox("Select an option", options)
+selected_option = st.selectbox("Select Category", options)
 # Get user inputs
 data = {}
-data["Name"] = st.text_input("Enter your name:")
-data["Address"] = st.text_input("Enter your address:")
-data["Phone"] = st.text_input("Enter your phone number:")
-data["Email"] = st.text_input("Enter your email:")
+if selected_option == "Basic Details":
+    data["Name"] = st.text_input("Enter your name:")
+    data["Address"] = st.text_input("Enter your address:")
+    data["Phone"] = st.text_input("Enter your phone number:")
+    data["Email"] = st.text_input("Enter your email:")
 data["JOBTITLE"] = st.text_input("Enter your job title:")
 data["COMPANY"] = st.text_input("Enter your company name:")
 data["ExpPlace"] = st.text_input("Enter your experience place:")
