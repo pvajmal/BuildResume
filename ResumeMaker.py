@@ -86,7 +86,7 @@ if selected_option == "Experience":
         data["Objective"] = st.text_input("Enter your Career objective (AI to Rephrase):")
         data["job description"] = st.text_input("Enter your job description (AI to Rephrase):")
         if data["Objective"]:
-            data["Objective"] = AI.getAI('Generate a career objective statement for a resume, focusing on the individuals career goals and aspirations, job title and industry, and key skills and qualifications.'+data["Objective"])
+            data["Objective"] = AI.getAI('Generate a career objective statement for a resume, focusing on the individuals career goals and aspirations, job title and industry, and key skills and qualifications. Avoid using I'+data["Objective"])
         if data["job description"]:
             data["job description"] = AI.getAI('Rephrase following to add in Resume experience in bulletin points : '+data["job description"])
     except:
