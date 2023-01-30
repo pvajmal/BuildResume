@@ -12,11 +12,9 @@ class CallAI:
 
 
         # Use the API key
-<<<<<<< HEAD
+
         openai.api_key = st.secrets["OPENAI_API_KEY"]
-=======
-        openai.api_key = "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"
->>>>>>> 90e185e5a7414d7937cfb85e919ad40ad08cc76c
+
 
         def generate_text(prompt):
             completions = openai.Completion.create(
