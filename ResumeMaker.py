@@ -89,7 +89,7 @@ options = ["Basic Details", "Experience", "Academic info", "Skills and Achieveme
 selected_option = st.selectbox("Select Category", options)
 # Get user inputs
 
-if selected_option == "Basic Details":
+while selected_option == "Basic Details":
     data["Name"] = st.text_input("Enter your name:")
     data["Address"] = st.text_input("Enter your address:")
     data["Phone"] = st.text_input("Enter your phone number:")
