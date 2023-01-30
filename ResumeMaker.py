@@ -12,7 +12,6 @@ import requests
 current_dir = Path(__file__).parent
 
 #Object to call AI to rephrase the text input
-
 AI = CallAI()
 
 class CreateResume:
@@ -97,9 +96,8 @@ data["JOBTITLE"] = st.text_input("Enter your job title:")
 data["COMPANY"] = st.text_input("Enter your company name:")
 data["ExpPlace"] = st.text_input("Enter your experience place:")
 data["ExpDuration"] = st.text_input("Enter your experience duration:")
-data["Objective"] = AI.getAI('Rephrase following to add in resume summary section in full sentance : '+st.text_input("Enter your Career objective (Rephrase using AI):"))
 try:
-    
+    data["Objective"] = AI.getAI('Rephrase following to add in resume summary section in full sentance : '+st.text_input("Enter your Career objective (Rephrase using AI):"))
     data["job description"] = AI.getAI('Rephrase following to add in Resume experience in bulletin points : '+st.text_input("Enter your job description (Rephrase using AI):"))
 except:
     data["Objective"] = st.text_input("Enter your Career objective:")
