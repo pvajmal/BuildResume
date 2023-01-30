@@ -56,7 +56,7 @@ class CreateResume:
                         run.text = run.text.replace(key, data.get(value, ''))
 
         # Save the document with a new file name
-        file_path = os.path.join('output', f"{data['Name']}_Resume.docx")
+        file_path = os.path.join('Output', f"{data['Name']}_Resume.docx")
         doc.save(file_path)
 
 
