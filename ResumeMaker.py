@@ -1,18 +1,16 @@
 from docx import Document
-from docx2pdf import convert
 import streamlit as st
 import os
 import pdfkit
 import docx
 from openAI import CallAI
 from pathlib import Path
-import streamlit as st
-import requests
-from collections import defaultdict
 import json
 
 current_dir = Path(__file__).parent
-
+css_file = current_dir / "styles" / "main.css"
+with open(css_file) as f:
+    st.markdown("<style>{}</style>".format(f.read()), unsafe_allow_html=True)
 # Object to call AI to rephrase the text input
 AI = CallAI()
 
@@ -56,7 +54,9 @@ class CreateResume:
                         run.text = run.text.replace(key, data.get(value, ''))
 
         # Save the document with a new file name
-        file_path = os.path.join('Output', f"{data['Name']}_Resume.docx")
+        if not os.path.exists('output'):
+            os.mkdir('output')
+        file_path = os.path.join('output', f"{data['Name']}_Resume.docx")
         doc.save(file_path)
 
 
@@ -122,7 +122,7 @@ def main():
     if st.button('Generate Resume'):
         resume = CreateResume()
         resume.create_resume(template_file, data)
-        resume_file = current_dir / str('Output/' + data['Name'] + '_Resume.docx')
+        resume_file = current_dir / str('output/' + data['Name'] + '_Resume.docx')
         with open(resume_file, "rb") as word_file:
             word_byte = word_file.read()
         st.download_button(
