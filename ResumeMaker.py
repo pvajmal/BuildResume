@@ -12,6 +12,7 @@ AI = CallAI()
 
 class CreateResume:
     def create_resume(self, template_file, data):
+        doc = Document(template_file)
         # Define mapping of template placeholder and data key
         mapping = {
             "{{Name}}": "Name",
