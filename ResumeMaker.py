@@ -103,9 +103,9 @@ def main():
         '''if st.button("Download PDF"):
             resume.convert_docx_to_pdf(file_path, pdf_file)
             with open(pdf_file, "rb") as f:
-                st.write(f.read(), unsafe_allow_html=True)
+                st.write(f.read(), unsafe_allow_html=True)'''
         with open(resume_file, "rb") as word_file:
-            word_byte = word_file.read()'''
+            word_byte = word_file.read()
         st.download_button(
             label=" 📄 Download Word Document",
             data=word_byte,
