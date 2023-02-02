@@ -6,8 +6,7 @@ import json
 
 current_dir = Path(__file__).parent
 css_file = current_dir / "styles" / "main.css"
-with open(css_file) as f:
-    st.markdown("<style>{}</style>".format(f.read()), unsafe_allow_html=True)
+
 # Object to call AI to rephrase the text input
 AI = CallAI()
 
