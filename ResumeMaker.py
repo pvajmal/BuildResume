@@ -1,21 +1,11 @@
-from docx import Document
-import streamlit as st
-from openAI import CallAI
-from pathlib import Path
-import json
 import os
-
-current_dir = Path(__file__).parent
-css_file = current_dir / "styles" / "main.css"
-
-# Object to call AI to rephrase the text input
-AI = CallAI()
+import json
+import streamlit as st
+import docx
 
 class CreateResume:
-    def create_resume(self, template_file, data):
-        doc = Document(template_file)
-        # Define mapping of template placeholder and data key
-        mapping = {
+    def __init__(self):
+        self.mapping = {
             "{{Name}}": "Name",
             "{{Objective}}": "Objective",
             "{{Address}}": "Address",
@@ -37,36 +27,28 @@ class CreateResume:
             "{{CollegeDuration}}": "CollegeDuration",
             "{{Achieve}}": "Achievement"
         }
+        self.data = self.load_data()
+    
+    def create_resume(self, template_file):
+        doc = docx.Document(template_file)
 
-
-        # Iterate through the document's paragraphs
         for para in doc.paragraphs:
             for run in para.runs:
-                for key, value in mapping.items():
+                for key, value in self.mapping.items():
                     if key in run.text:
+                        run.text = run.text.replace(key, self.data.get(value, ''))
 
-                        run.text = run.text.replace(key, data.get(value, ''))
-
-        # Save the document with a new file name
-        if not os.path.exists('output'):
-            os.mkdir('output')
-        file_path = os.path.join('output', f"{data['Name']}_Resume.docx")
+        os.makedirs('output', exist_ok=True)
+        file_path = os.path.join('output', f"{self.data['Name']}_Resume.docx")
         doc.save(file_path)
 
-
-    # Convert to pdf
     def convert_docx_to_pdf(self, docx_file, pdf_file):
         doc = docx.Document(docx_file)
         pdfkit.from_string(doc.text, pdf_file)
 
-
-
-
-
-    def save_data(self,data):
+    def save_data(self):
         with open("data.json", "w") as f:
-            json.dump(data, f)
-
+            json.dump(self.data, f)
 
     def load_data(self):
         try:
