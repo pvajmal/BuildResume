@@ -61,12 +61,12 @@ class CreateResume:
 
 
 
-    def save_data(data):
+    def save_data(self,data):
         with open("data.json", "w") as f:
             json.dump(data, f)
 
 
-    def load_data():
+    def load_data(self):
         try:
             with open("data.json", "r") as f:
                 return json.load(f)
