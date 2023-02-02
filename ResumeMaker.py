@@ -4,7 +4,7 @@ import streamlit as st
 import docx
 import pdfkit
 
-
+current_dir = Path(__file__).parent
 class CreateResume:
     def __init__(self):
         self.mapping = {
