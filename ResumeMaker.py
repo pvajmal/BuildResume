@@ -3,6 +3,7 @@ import json
 import streamlit as st
 import docx
 import pdfkit
+from pathlib import Path
 
 current_dir = Path(__file__).parent
 class CreateResume:
