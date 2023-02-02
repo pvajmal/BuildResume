@@ -3,6 +3,7 @@ import streamlit as st
 from openAI import CallAI
 from pathlib import Path
 import json
+import os
 
 current_dir = Path(__file__).parent
 css_file = current_dir / "styles" / "main.css"
