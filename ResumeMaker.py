@@ -10,8 +10,8 @@ css_file = current_dir / "styles" / "main.css"
 # Object to call AI to rephrase the text input
 AI = CallAI()
 
-class resume:
-    def create_resume(template_file, data):
+class CreateResume:
+    def create_resume(self, template_file, data):
         # Define mapping of template placeholder and data key
         mapping = {
             "{{Name}}": "Name",
