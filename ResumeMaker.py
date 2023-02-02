@@ -1,18 +1,78 @@
-
+from docx import Document
 import streamlit as st
 from openAI import CallAI
 from pathlib import Path
-import streamlit as st
-from create_resume import CreateResume
-
+import json
 
 current_dir = Path(__file__).parent
-
+css_file = current_dir / "styles" / "main.css"
+with open(css_file) as f:
+    st.markdown("<style>{}</style>".format(f.read()), unsafe_allow_html=True)
 # Object to call AI to rephrase the text input
 AI = CallAI()
 
 
 
+        # Define mapping of template placeholder and data key
+        mapping = {
+            "{{Name}}": "Name",
+            "{{Objective}}": "Objective",
+            "{{Address}}": "Address",
+            "{{Phone}}": "Phone",
+            "{{Email}}": "Email",
+            "{{JOBTITLE}}": "JOBTITLE",
+            "{{COMPANY}}": "COMPANY",
+            "{{ExpPlace}}": "ExpPlace",
+            "{{ExpDuration}}": "ExpDuration",
+            "{{job description}}": "job description",
+            "{{Technical Skills}}": "Technical Skills",
+            "{{SSkills}}": "SSkills",
+            "{{LinkedIn}}" : "LinkedIn",
+            "{{College}}": "College",
+            "{{Degree}}": "Degree",
+            "{{CollegePlace}}": "CollegePlace",
+            "{{CGPA}}": "CGPA",
+            "{{CollegeDetails}}": "CollegeDetails",
+            "{{CollegeDuration}}": "CollegeDuration",
+            "{{Achieve}}": "Achievement"
+        }
+
+
+        # Iterate through the document's paragraphs
+        for para in doc.paragraphs:
+            for run in para.runs:
+                for key, value in mapping.items():
+                    if key in run.text:
+
+                        run.text = run.text.replace(key, data.get(value, ''))
+
+        # Save the document with a new file name
+        if not os.path.exists('output'):
+            os.mkdir('output')
+        file_path = os.path.join('output', f"{data['Name']}_Resume.docx")
+        doc.save(file_path)
+
+
+    # Convert to pdf
+    def convert_docx_to_pdf(self, docx_file, pdf_file):
+        doc = docx.Document(docx_file)
+        pdfkit.from_string(doc.text, pdf_file)
+
+
+
+
+
+def save_data(data):
+    with open("data.json", "w") as f:
+        json.dump(data, f)
+
+
+def load_data():
+    try:
+        with open("data.json", "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
 
 def main():
     resume = CreateResume()
@@ -56,7 +116,7 @@ def main():
     if st.button('Generate Resume'):
         
         resume.create_resume(template_file, data)
-        resume_file = current_dir / str('Output/' + data['Name'] + '_Resume.docx')
+        resume_file = current_dir / str('output/' + data['Name'] + '_Resume.docx')
         with open(resume_file, "rb") as word_file:
             word_byte = word_file.read()
         st.download_button(
