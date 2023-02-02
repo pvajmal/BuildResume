@@ -49,6 +49,7 @@ class CreateResume:
         doc = docx.Document(docx_file)
         pdfkit.from_string(doc.text, pdf_file)
 
+
     def save_data(self):
         with open("data.json", "w") as f:
             json.dump(self.data, f)
@@ -96,11 +97,21 @@ def main():
         template_file = current_dir / "resume_template.docx"
         resume.create_resume(template_file)
         st.success("Resume generated successfully!")
-        pdf_file = os.path.join("output", f"{resume.data['Name']}_Resume.pdf")
-        if st.button("Download PDF"):
+        pdf_file =  current_dir / os.path.join("output", f"{resume.data['Name']}_Resume.pdf")
+        resume_file = current_dir / str('output/' + resume.data['Name'] + '_Resume.docx')
+
+        '''if st.button("Download PDF"):
             resume.convert_docx_to_pdf(file_path, pdf_file)
             with open(pdf_file, "rb") as f:
                 st.write(f.read(), unsafe_allow_html=True)
+        with open(resume_file, "rb") as word_file:
+            word_byte = word_file.read()'''
+        st.download_button(
+            label=" 📄 Download Word Document",
+            data=word_byte,
+            file_name=resume_file.name,
+            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        )
     resume.save_data()
 
 if __name__ == "__main__":
