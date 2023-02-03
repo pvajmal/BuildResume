@@ -6,6 +6,8 @@ import pdfkit
 from pathlib import Path
 from DocxTemplate import ResumeTemplate
 from openAI import CallAI
+import re
+import datetime
 
 template = ResumeTemplate()
 AI = CallAI()
@@ -37,13 +39,19 @@ def main():
     options = ["Basic Details", "Experience", "Academic Info", "Skills & Achievements","Ask AI!"]
     selected_option = st.radio("Select Category", options)
 
-
+    def is_valid_email(email):
+        pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        return re.match(pattern, email)
     # Get user inputs
     if selected_option == "Basic Details":
         resume.data["Name"] = st.text_input("Enter your name:")
         resume.data["Address"] = st.text_input("Enter your address:")
         resume.data["Phone"] = st.text_input("Enter your phone number:")
-        resume.data["Email"] = st.text_input("Enter your email:")
+        email = st.text_input("Enter your email:")
+        if is_valid_email(email):
+            resume.data["Email"] = email
+        else:
+            st.error("Invalid email address. Please try again.")
         resume.data["LinkedIn"] = st.text_input("Enter your LinkedIn ID:")
         resume.data["Objective"] = st.text_area("Enter your Career objective:")
         call_ai_basic = st.button("Use AI to write career objecive")
@@ -58,37 +66,40 @@ def main():
             st.write(AI.getAI("answer following question "+ Q_AI))
     elif selected_option == "Experience":
         
-        if "experiences" not in resume.data:
-            resume.data["experiences"] = []
-        title = st.text_input("Title")
-        company = st.text_input("Company")
-        duration = st.text_input("Duration")
-        description = st.text_area("Description")
-        call_ai_exp = st.button("Use AI to write job responsibilites")
-        if call_ai_exp:
-             description = (AI.getAI("Convert following to add in resume (job responsibilities)" +description))
-             st.write(description)
-        buttons = st.empty()
-        add_exp_button = st.button("Add Experience")
-        clear_exp_button = st.button("Clear Experience")
 
+        if selected_option == "Experience":
+                
+            if "experiences" not in resume.data:
+                resume.data["experiences"] = []
+            title = st.text_input("Title")
+            company = st.text_input("Company")
+            start_date = st.date_input("Start Date", value=datetime.datetime.now())
+            end_date = st.date_input("End Date", value=datetime.datetime.now())
+            description = st.text_area("Description")
+            call_ai_exp = st.button("Use AI to write job responsibilites")
+            if call_ai_exp:
+                description = (AI.getAI("Convert following to add in resume (job responsibilities)" +description))
+                st.write(description)
+            buttons = st.empty()
+            add_exp_button = st.button("Add Experience")
+            clear_exp_button = st.button("Clear Experience")
 
-        if add_exp_button:
-            resume.data["experiences"].append({"title": title, "company": company, "duration": duration, "description": description})
+            if add_exp_button:
+                resume.data["experiences"].append({"title": title, "company": company, "duration": str(start_date.strftime('%b %Y'))+ " - "+ str(end_date.strftime('%b %Y')), "description": description})
 
-        if clear_exp_button:
-            resume.data["experiences"].clear()
+            if clear_exp_button:
+                resume.data["experiences"].clear()
 
-        st.write("Current Experiences:")
-        i = 1
-        for exp in resume.data["experiences"]:
-            st.write(f"Experience {i}:")
-            st.write(f"Title: {exp['title']}")
-            st.write(f"Company: {exp['company']}")
-            st.write(f"Duration: {exp['duration']}")
-            st.write(f"Description: {exp['description']}")
-            st.write("")
-            i += 1
+            st.write("Current Experiences:")
+            i = 1
+            for exp in resume.data["experiences"]:
+                st.write(f"Experience {i}:")
+                st.write(f"Title: {exp['title']}")
+                st.write(f"Company: {exp['company']}")
+                st.write(f"Duration: {start_date.strftime('%b %Y')} - {end_date.strftime('%b %Y')}")
+                st.write(f"Description: {exp['description']}")
+                st.write("")
+                i += 1
         
     elif selected_option == "Skills & Achievements":
         resume.data["Skills"] = st.text_input("Enter your skills:")
@@ -103,8 +114,8 @@ def main():
 
         school = st.text_input("School Name")
         degree = st.text_input("Degree")
-        start_date = st.text_input("Start Date")
-        end_date = st.text_input("End Date")
+        start_date = st.date_input("Start Date", value=datetime.datetime.now())
+        end_date = st.date_input("End Date", value=datetime.datetime.now())
         city = st.text_input("City")
         description = st.text_area("Description")
 
@@ -113,7 +124,7 @@ def main():
         clear_edu_button = st.button("Clear Education")
 
         if add_edu_button:
-            resume.data["education"].append({"school": school, "degree": degree, "start_date": start_date, "end_date": end_date, "city": city, "description": description})
+            resume.data["education"].append({"school": school, "degree": degree, "start_date": str(start_date.strftime('%b %Y')), "end_date": str(end_date.strftime('%b %Y')), "city": city, "description": description})
 
         if clear_edu_button:
             resume.data["education"].clear()
@@ -124,8 +135,8 @@ def main():
             st.write(f"Education {i}:")
             st.write(f"School: {edu['school']}")
             st.write(f"Degree: {edu['degree']}")
-            st.write(f"Start Date: {edu['start_date']}")
-            st.write(f"End Date: {edu['end_date']}")
+            st.write(f"Start Date: {start_date.strftime('%b %Y')}")
+            st.write(f"End Date: {end_date.strftime('%b %Y')}")
             st.write(f"City: {edu['city']}")
             st.write(f"Description: {edu['description']}")
             st.write("")
@@ -133,6 +144,7 @@ def main():
 
 
     if st.button('Generate Resume'):
+
         try:
             document = template.CreateResume(data)
             # Save the document
