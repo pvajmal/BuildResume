@@ -125,7 +125,7 @@ def main():
 
 
     if st.button('Generate Resume'):
-        download = template.CreateResume(data)
+        document = template.CreateResume(data)
         # Save the document
         document.save(current_dir /str('output/' + data['Name'] + '_resume.docx'))
         st.success("Resume generated successfully!")
