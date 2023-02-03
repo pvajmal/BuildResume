@@ -60,7 +60,7 @@ def main():
         description = st.text_area("Description")
         call_ai_exp = st.button("Use AI to write career objecive")
         if call_ai_exp:
-             description = st.write(AI.getAI("write an awesome bulletin point to add in resume experience responsibility section with"+ description))
+             description = st.write(AI.getAI(description))
         buttons = st.empty()
         add_exp_button = st.button("Add Experience")
         clear_exp_button = st.button("Clear Experience")
