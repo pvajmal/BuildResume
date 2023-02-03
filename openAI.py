@@ -13,7 +13,7 @@ class CallAI:
 
 
         # Use the API key
-
+        
         openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 

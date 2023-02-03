@@ -4,51 +4,20 @@ import streamlit as st
 import docx
 import pdfkit
 from pathlib import Path
+from DocxTemplate import ResumeTemplate
+from openAI import CallAI
+
+template = ResumeTemplate()
+AI = CallAI()
 
 current_dir = Path(__file__).parent
 class CreateResume:
     def __init__(self):
-        self.mapping = {
-            "{{Name}}": "Name",
-            "{{Objective}}": "Objective",
-            "{{Address}}": "Address",
-            "{{Phone}}": "Phone",
-            "{{Email}}": "Email",
-            "{{JOBTITLE}}": "JOBTITLE",
-            "{{COMPANY}}": "COMPANY",
-            "{{ExpPlace}}": "ExpPlace",
-            "{{ExpDuration}}": "ExpDuration",
-            "{{job description}}": "job description",
-            "{{Technical Skills}}": "Technical Skills",
-            "{{SSkills}}": "SSkills",
-            "{{LinkedIn}}" : "LinkedIn",
-            "{{College}}": "College",
-            "{{Degree}}": "Degree",
-            "{{CollegePlace}}": "CollegePlace",
-            "{{CGPA}}": "CGPA",
-            "{{CollegeDetails}}": "CollegeDetails",
-            "{{CollegeDuration}}": "CollegeDuration",
-            "{{Achieve}}": "Achievement"
-        }
         self.data = self.load_data()
     
-    def create_resume(self, template_file):
-        doc = docx.Document(template_file)
-
-        for para in doc.paragraphs:
-            for run in para.runs:
-                for key, value in self.mapping.items():
-                    if key in run.text:
-                        run.text = run.text.replace(key, self.data.get(value, ''))
-
-        os.makedirs('output', exist_ok=True)
-        file_path = os.path.join('output', f"{self.data['Name']}_Resume.docx")
-        doc.save(file_path)
-
     def convert_docx_to_pdf(self, docx_file, pdf_file):
         doc = docx.Document(docx_file)
         pdfkit.from_string(doc.text, pdf_file)
-
 
     def save_data(self):
         with open("data.json", "w") as f:
@@ -63,9 +32,11 @@ class CreateResume:
 
 def main():
     resume = CreateResume()
-    st.title("Resume Generator")
-    options = ["Basic Details", "Experience", "Academic info", "Skills and Achievements"]
+    data = resume.load_data()
+    st.set_page_config(page_icon="📑", page_title="Resume Generator")
+    options = ["Basic Details", "Experience", "Academic Info", "Skills & Achievements"]
     selected_option = st.radio("Select Category", options)
+
 
     # Get user inputs
     if selected_option == "Basic Details":
@@ -74,36 +45,90 @@ def main():
         resume.data["Phone"] = st.text_input("Enter your phone number:")
         resume.data["Email"] = st.text_input("Enter your email:")
         resume.data["LinkedIn"] = st.text_input("Enter your LinkedIn ID:")
+        resume.data["Objective"] = st.text_area("Enter your Career objective:")
+        call_ai_basic = st.button("Use AI to write career objecive")
+        if call_ai_basic:
+             resume.data["Objective"] = st.write(AI.getAI("Write an awesome resume career objective using "+ resume.data["Objective"]))
+        st.write("")
     elif selected_option == "Experience":
-        resume.data["JOBTITLE"] = st.text_input("Enter your job title:")
-        resume.data["COMPANY"] = st.text_input("Enter your company name:")
-        resume.data["ExpPlace"] = st.text_input("Enter your experience place:")
-        resume.data["ExpDuration"] = st.text_input("Enter your experience duration:")
-        resume.data["Objective"] = st.text_input("Enter your Career objective:")
-        resume.data["job description"] = st.text_input("Enter your job description:")
-    elif selected_option == "Skills and Achievements":
-        resume.data["Technical Skills"] = st.text_input("Enter your technical skills:")
-        resume.data["SSkills"] = st.text_input("Enter your soft skills:")
-        resume.data["Achievement"] = st.text_input("Enter your achievements:")
-    elif selected_option == "Academic info":
-        resume.data["College"] = st.text_input("Enter your college name:")
-        resume.data["Degree"] = st.text_input("Enter your degree:")
-        resume.data["CollegePlace"] = st.text_input("Enter your college place:")
-        resume.data["CGPA"] = st.text_input("Enter your CGPA:")
-        resume.data["CollegeDetails"] = st.text_input("Enter your college details:")
-        resume.data["CollegeDuration"] = st.text_input("Enter your college duration:")
+        
+        if "experiences" not in resume.data:
+            resume.data["experiences"] = []
+        title = st.text_input("Title")
+        company = st.text_input("Company")
+        duration = st.text_input("Duration")
+        description = st.text_area("Description")
+        call_ai_exp = st.button("Use AI to write career objecive")
+        if call_ai_exp:
+             description = st.write(AI.getAI("write an awesome bulletin point to add in resume experience responsibility section with"+ description))
+        buttons = st.empty()
+        add_exp_button = st.button("Add Experience")
+        clear_exp_button = st.button("Clear Experience")
+
+
+        if add_exp_button:
+            resume.data["experiences"].append({"title": title, "company": company, "duration": duration, "description": description})
+
+        if clear_exp_button:
+            resume.data["experiences"].clear()
+
+        st.write("Current Experiences:")
+        i = 1
+        for exp in resume.data["experiences"]:
+            st.write(f"Experience {i}:")
+            st.write(f"Title: {exp['title']}")
+            st.write(f"Company: {exp['company']}")
+            st.write(f"Duration: {exp['duration']}")
+            st.write(f"Description: {exp['description']}")
+            st.write("")
+            i += 1
+        
+    elif selected_option == "Skills & Achievements":
+        resume.data["Skills"] = st.text_input("Enter your skills:")
+        call_ai_skill = st.button("Use AI to write career objecive")
+        if call_ai_skill:
+             resume.data["Skills"]  = st.write(AI.getAI("convert following to add in resume skills section. I need to add in bulletin points"+ resume.data["Skills"] ))
+        resume.data["Achievement"] = st.text_area("Enter your achievements:")
+    elif selected_option == "Academic Info":
+        if "education" not in resume.data:
+            resume.data["education"] = []
+
+        school = st.text_input("School Name")
+        degree = st.text_input("Degree")
+        start_date = st.text_input("Start Date")
+        end_date = st.text_input("End Date")
+        city = st.text_input("City")
+        description = st.text_area("Description")
+
+        buttons = st.empty()
+        add_edu_button = st.button("Add Education")
+        clear_edu_button = st.button("Clear Education")
+
+        if add_edu_button:
+            resume.data["education"].append({"school": school, "degree": degree, "start_date": start_date, "end_date": end_date, "city": city, "description": description})
+
+        if clear_edu_button:
+            resume.data["education"].clear()
+
+        st.write("Current Education:")
+        i = 1
+        for edu in resume.data["education"]:
+            st.write(f"Education {i}:")
+            st.write(f"School: {edu['school']}")
+            st.write(f"Degree: {edu['degree']}")
+            st.write(f"Start Date: {edu['start_date']}")
+            st.write(f"End Date: {edu['end_date']}")
+            st.write(f"City: {edu['city']}")
+            st.write(f"Description: {edu['description']}")
+            st.write("")
+            i += 1
+
 
     if st.button('Generate Resume'):
-        template_file = current_dir / "resume_template.docx"
-        resume.create_resume(template_file)
+        template.CreateResume(data)
         st.success("Resume generated successfully!")
         pdf_file =  current_dir / os.path.join("output", f"{resume.data['Name']}_Resume.pdf")
         resume_file = current_dir / str('output/' + resume.data['Name'] + '_Resume.docx')
-
-        '''if st.button("Download PDF"):
-            resume.convert_docx_to_pdf(file_path, pdf_file)
-            with open(pdf_file, "rb") as f:
-                st.write(f.read(), unsafe_allow_html=True)'''
         with open(resume_file, "rb") as word_file:
             word_byte = word_file.read()
         st.download_button(
@@ -112,8 +137,10 @@ def main():
             file_name=resume_file.name,
             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         )
+    if st.button('Clear Data'):
+         resume.data.clear()
+         st.write("All details entered is now cleared from database! Please start to enter details.")
     resume.save_data()
 
 if __name__ == "__main__":
-
     main()
