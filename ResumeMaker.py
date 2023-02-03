@@ -127,7 +127,7 @@ def main():
     if st.button('Generate Resume'):
         document = template.CreateResume(data)
         # Save the document
-        document.save(current_dir /str('output/' + data['Name'] + '_resume.docx'))
+        document.save(current_dir /str('output/' + data['Name'] + '_Resume.docx'))
         st.success("Resume generated successfully!")
         pdf_file =  current_dir / os.path.join("output", f"{resume.data['Name']}_Resume.pdf")
         resume_file = current_dir / str('output/' + resume.data['Name'] + '_Resume.docx')
