@@ -21,5 +21,5 @@ class CallAI:
             message = completions.choices[0].text
             return message.strip()
 
-        prompt = (f"rewrite the following text:\n{text}")
-        return (generate_text(prompt))
+        
+        return (generate_text(text))
