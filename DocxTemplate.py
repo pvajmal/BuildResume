@@ -72,7 +72,6 @@ class ResumeTemplate:
 
 
 
-        # Save the document
-        document.save(current_dir /str('output/' + data['Name'] + '_resume.docx'))
+
         return document
 
