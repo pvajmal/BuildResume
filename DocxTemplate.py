@@ -1,7 +1,7 @@
 from docx import Document
 from docx.shared import RGBColor, Inches, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-current_dir = Path(__file__).parent
+ 
 class ResumeTemplate:
     def CreateResume(self,data):
 
