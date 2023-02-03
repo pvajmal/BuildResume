@@ -5,8 +5,8 @@ import streamlit as st
 class CallAI:
     def getAI(self, text):   
         # Use the API key
-        
-        openai.api_key = st.secrets["OPENAI_API_KEY"]
+        openai.api_key = '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'
+        #openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 
         def generate_text(prompt):

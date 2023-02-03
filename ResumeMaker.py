@@ -34,7 +34,7 @@ def main():
     resume = CreateResume()
     data = resume.load_data()
     st.set_page_config(page_icon="📑", page_title="Resume Generator")
-    options = ["Basic Details", "Experience", "Academic Info", "Skills & Achievements"]
+    options = ["Basic Details", "Experience", "Academic Info", "Skills & Achievements","Ask AI!"]
     selected_option = st.radio("Select Category", options)
 
 
@@ -48,8 +48,14 @@ def main():
         resume.data["Objective"] = st.text_area("Enter your Career objective:")
         call_ai_basic = st.button("Use AI to write career objecive")
         if call_ai_basic:
-             resume.data["Objective"] = st.write(AI.getAI("Write an awesome resume career objective using "+ resume.data["Objective"]))
+             resume.data["Objective"] = AI.getAI("Write an awesome resume career objective using "+ resume.data["Objective"])
+             st.write(resume.data)
         st.write("")
+    elif selected_option == "Ask AI!":
+        Q_AI = st.text_area("Ask me question!")
+        call_ai_q = st.button("ASK")
+        if call_ai_q:
+            st.write(AI.getAI("answer following question "+ Q_AI))
     elif selected_option == "Experience":
         
         if "experiences" not in resume.data:
@@ -58,9 +64,9 @@ def main():
         company = st.text_input("Company")
         duration = st.text_input("Duration")
         description = st.text_area("Description")
-        call_ai_exp = st.button("Use AI to write career objecive")
+        call_ai_exp = st.button("Use AI to write job responsibilites")
         if call_ai_exp:
-             description = st.write(AI.getAI(description))
+             description = (AI.getAI("Convert following to add in resume (job responsibilities)" +description))
         buttons = st.empty()
         add_exp_button = st.button("Add Experience")
         clear_exp_button = st.button("Clear Experience")
@@ -85,9 +91,9 @@ def main():
         
     elif selected_option == "Skills & Achievements":
         resume.data["Skills"] = st.text_input("Enter your skills:")
-        call_ai_skill = st.button("Use AI to write career objecive")
+        call_ai_skill = st.button("Use AI to write skills")
         if call_ai_skill:
-             resume.data["Skills"]  = st.write(AI.getAI("convert following to add in resume skills section. I need to add in bulletin points"+ resume.data["Skills"] ))
+             resume.data["Skills"]  = (AI.getAI("convert following to add in resume skills section. I need to add in bulletin points"+ resume.data["Skills"] ))
         resume.data["Achievement"] = st.text_area("Enter your achievements:")
     elif selected_option == "Academic Info":
         if "education" not in resume.data:
