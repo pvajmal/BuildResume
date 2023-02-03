@@ -4,14 +4,6 @@ import openai
 import streamlit as st
 class CallAI:
     def getAI(self, text):   
-        api_key = os.environ.get("OPENAI_API_KEY")
-
-        # Use the API key
-        openai.api_key = api_key
-
-        # Import the OpenAI library
-
-
         # Use the API key
         
         openai.api_key = st.secrets["OPENAI_API_KEY"]
