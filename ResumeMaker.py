@@ -49,7 +49,7 @@ def main():
         call_ai_basic = st.button("Use AI to write career objecive")
         if call_ai_basic:
              resume.data["Objective"] = AI.getAI("Write an awesome resume career objective using "+ resume.data["Objective"])
-             st.write(resume.data)
+             st.write(resume.data["Objective"])
         st.write("")
     elif selected_option == "Ask AI!":
         Q_AI = st.text_area("Ask me question!")
@@ -133,20 +133,23 @@ def main():
 
 
     if st.button('Generate Resume'):
-        document = template.CreateResume(data)
-        # Save the document
-        document.save(current_dir /str('output/' + data['Name'] + '_Resume.docx'))
-        st.success("Resume generated successfully!")
-        pdf_file =  current_dir / os.path.join("output", f"{resume.data['Name']}_Resume.pdf")
-        resume_file = current_dir / str('output/' + resume.data['Name'] + '_Resume.docx')
-        with open(resume_file, "rb") as word_file:
-            word_byte = word_file.read()
-        st.download_button(
-            label=" 📄 Download Word Document",
-            data=word_byte,
-            file_name=resume_file.name,
-            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        )
+        try:
+            document = template.CreateResume(data)
+            # Save the document
+            document.save(current_dir /str('output/' + data['Name'] + '_Resume.docx'))
+            st.success("Resume generated successfully!")
+            pdf_file =  current_dir / os.path.join("output", f"{resume.data['Name']}_Resume.pdf")
+            resume_file = current_dir / str('output/' + resume.data['Name'] + '_Resume.docx')
+            with open(resume_file, "rb") as word_file:
+                word_byte = word_file.read()
+            st.download_button(
+                label=" 📄 Download Word Document",
+                data=word_byte,
+                file_name=resume_file.name,
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            )
+        except:
+            st.write("You need to go through all categories to create your resume!")
     if st.button('Clear Data'):
          resume.data.clear()
          st.write("All details entered is now cleared from database! Please start to enter details.")
