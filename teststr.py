@@ -1,14 +1,14 @@
-import streamlit as st
+import sqlite3
+import json
 
-experiences = []
+conn = sqlite3.connect("user_data.db")
+cursor = conn.cursor()
+cursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT, age INTEGER)")
+user_data = [{"name": "John Doe", "age": 30},
+             {"name": "Jane Doe", "age": 25}]
 
+for user in user_data:
+    cursor.execute("INSERT INTO users (name, age) VALUES (?, ?)", (user["name"], user["age"]))
 
-title = st.text_input("Title")
-company = st.text_input("Company")
-duration = st.text_input("Duration")
-description = st.text_area("Description")
-
-if st.button("Add Experience"):
-    experiences.append({"title": title, "company": company, "duration": duration, "description": description})
-
-st.write(experiences)
+conn.commit()
+cursor.execute("SELECT * FROM users")

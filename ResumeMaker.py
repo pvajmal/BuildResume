@@ -56,7 +56,7 @@ def main():
         resume.data["Objective"] = st.text_area("Enter your Career objective:")
         call_ai_basic = st.button("Use AI to write career objecive")
         if call_ai_basic:
-             resume.data["Objective"] = AI.getAI("Write an awesome resume career objective using "+ resume.data["Objective"])
+             resume.data["Objective"] = AI.getAI("Please craft a compelling and relevant career objective using the following information: "+ resume.data["Objective"])
              st.write(resume.data["Objective"])
         st.write("")
     elif selected_option == "Ask AI!":
@@ -78,7 +78,7 @@ def main():
             description = st.text_area("Description")
             call_ai_exp = st.button("Use AI to write job responsibilites")
             if call_ai_exp:
-                description = (AI.getAI("Convert following to add in resume (job responsibilities)" +description))
+                description = (AI.getAI("Make following text to add in job responsibilities section in  resume:" +description))
                 st.write(description)
             buttons = st.empty()
             add_exp_button = st.button("Add Experience")
@@ -105,7 +105,7 @@ def main():
         resume.data["Skills"] = st.text_input("Enter your skills:")
         call_ai_skill = st.button("Use AI to write skills")
         if call_ai_skill:
-             resume.data["Skills"]  = (AI.getAI("convert following to add in resume skills section. I need to add in bulletin points"+ resume.data["Skills"] ))
+             resume.data["Skills"]  = (AI.getAI("Please convert the following skills into bullet points for my resume: "+ resume.data["Skills"] ))
              st.write(resume.data["Skills"])
         resume.data["Achievement"] = st.text_area("Enter your achievements:")
     elif selected_option == "Academic Info":
