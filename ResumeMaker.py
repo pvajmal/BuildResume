@@ -95,7 +95,7 @@ def main():
         call_ai_skill = st.button("Use AI to write skills")
         if call_ai_skill:
              resume.data["Skills"]  = (AI.getAI("convert following to add in resume skills section. I need to add in bulletin points"+ resume.data["Skills"] ))
-            st.write(resume.data["Skills"])
+             st.write(resume.data["Skills"])
         resume.data["Achievement"] = st.text_area("Enter your achievements:")
     elif selected_option == "Academic Info":
         if "education" not in resume.data:
