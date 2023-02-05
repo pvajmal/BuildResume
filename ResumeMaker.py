@@ -75,7 +75,8 @@ def main():
         Q_AI = st.text_area("Ask me question!")
         call_ai_q = st.button("ASK")
         if call_ai_q:
-            st.write(res.tts(AI.getAI("answer following question "+ Q_AI)))
+            #AI.getAI("answer following question "+ Q_AI)
+            st.write(res.tts("test"))
     elif selected_option == "Experience":
         
 
