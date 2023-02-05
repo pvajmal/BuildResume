@@ -21,7 +21,7 @@ class CreateResume:
     
 
     def tts(text):
-        tts = gTTS(text)
+        tts = gTTS(self,text)
         tts.save("tts.mp3")
         return Audio("tts.mp3", autoplay=True)
 
@@ -75,8 +75,7 @@ def main():
         Q_AI = st.text_area("Ask me question!")
         call_ai_q = st.button("ASK")
         if call_ai_q:
-            #AI.getAI("answer following question "+ Q_AI)
-            st.write(res.tts("test"))
+            st.write(res.tts(AI.getAI("answer following question "+ Q_AI)))
     elif selected_option == "Experience":
         
 
