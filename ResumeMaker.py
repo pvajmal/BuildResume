@@ -68,7 +68,7 @@ def main():
         st.write("")
     elif selected_option == "Ask AI!":
         def tts(text):
-            tts = gTTS(self,text)
+            tts = gTTS(text)
             tts.save("tts.mp3")
             return Audio("tts.mp3", autoplay=True)
         
