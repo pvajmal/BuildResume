@@ -20,7 +20,7 @@ class CreateResume:
         self.data = self.load_data()
     
 
-    def tts(text):
+    def tts(self, text):
         tts = gTTS(self,text)
         tts.save("tts.mp3")
         return Audio("tts.mp3", autoplay=True)
