@@ -9,6 +9,7 @@ from openAI import CallAI
 import re
 import datetime
 from gtts import gTTS
+import datetime
 from IPython.display import Audio
 
 template = ResumeTemplate()
@@ -43,7 +44,7 @@ def main():
     resume = CreateResume()
     data = resume.load_data()
     st.set_page_config(page_icon="📑", page_title="Resume Generator")
-    options = ["Basic Details", "Experience", "Academic Info", "Skills & Achievements","Ask AI!"]
+    options = ["Basic Details", "Experience", "Academic Info", "Skills & Achievements","Ask AI", "Day Difference Calculator"]
     selected_option = st.radio("Select Category", options)
 
     def is_valid_email(email):
@@ -61,7 +62,7 @@ def main():
             st.error("Invalid email address. Please try again.")
         resume.data["LinkedIn"] = st.text_input("Enter your LinkedIn ID:")
         resume.data["Objective"] = st.text_area("Enter your Career objective:")
-        call_ai_basic = st.button("Use AI to write career objecive")
+        call_ai_basic = st.button("Use AI to write career objecive based on your input")
         if call_ai_basic:
              resume.data["Objective"] = AI.getAI("Please craft a compelling and relevant career objective using the following information: "+ resume.data["Objective"])
              st.write(resume.data["Objective"])
@@ -88,7 +89,7 @@ def main():
             start_date = st.date_input("Start Date", value=datetime.datetime.now())
             end_date = st.date_input("End Date", value=datetime.datetime.now())
             description = st.text_area("Description")
-            call_ai_exp = st.button("Use AI to write job responsibilites")
+            call_ai_exp = st.button("Use AI to write job responsibilites based on your input")
             if call_ai_exp:
                 description = (AI.getAI("Make following text to add in job responsibilities section in  resume:" +description))
                 st.write(description)
@@ -115,7 +116,7 @@ def main():
         
     elif selected_option == "Skills & Achievements":
         resume.data["Skills"] = st.text_input("Enter your skills:")
-        call_ai_skill = st.button("Use AI to write skills")
+        call_ai_skill = st.button("Use AI to write skills based on your input")
         if call_ai_skill:
              resume.data["Skills"]  = (AI.getAI("Please convert the following skills into bullet points for my resume: "+ resume.data["Skills"] ))
              st.write(resume.data["Skills"])
@@ -153,9 +154,18 @@ def main():
             st.write(f"Description: {edu['description']}")
             st.write("")
             i += 1
+    elif selected_option == "Day Difference Calculator":
+        start_date = st.date_input("Start Date", value=datetime.datetime.now())
+        end_date = st.date_input("End Date", value=datetime.datetime.now())
+        calc_diff = st.button("Calculate Difference of days")
+        if calc_diff:
+            dayDiff = end_date - start_date
+            st.write(f"Difference between {start_date} and {end_date} is: {dayDiff.days} day(s).")
+
 
 
     if st.button('Generate Resume'):
+        add_edu_button = st.button("Add Education")
 
         try:
             document = template.CreateResume(data)
