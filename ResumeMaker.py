@@ -67,7 +67,7 @@ def main():
              resume.data["Objective"] = AI.getAI("Please craft a compelling and relevant career objective using the following information: "+ resume.data["Objective"])
              st.write(resume.data["Objective"])
         st.write("")
-    elif selected_option == "Ask AI!":
+    elif selected_option == "Ask AI":
         def tts(text):
             tts = gTTS(text)
             tts.save("tts.mp3")
