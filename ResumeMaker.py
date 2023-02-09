@@ -20,7 +20,7 @@ import pdfkit
 template = ResumeTemplate()
 AI = CallAI()
 import os
-st.write(os.listdir('/home/appuser/venv/lib/python3.9/site-packages/wkhtmltopdf-0.2.dist-info'))
+st.write(os.listdir('/home/appuser/venv/lib/python3.9/site-packages/wkhtmltopdf-0.2.dist-info/INSTALLER'))
 current_dir = Path(__file__)
 
 class CreateResume:
