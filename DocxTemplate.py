@@ -3,6 +3,7 @@ from docx.shared import RGBColor, Inches, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
  
 class ResumeTemplate:
+    
     def CreateResume(self,data):
         # Create a new word document
         document = Document()
@@ -17,7 +18,7 @@ class ResumeTemplate:
         header = document.add_heading(data['Name'], 0)
         header.style.font.name = 'Arial'
         header.style.font.size = Pt(20)
-        header.style.font.color.rgb = RGBColor(0, 0, 0)
+        header.style.font.color.rgb = RGBColor(1, 0, 0)
 
         # Add your name, address, contact information with custom font and size
         document.add_paragraph(data['Address'], style='Normal').style.font.name = 'Arial'
@@ -33,10 +34,22 @@ class ResumeTemplate:
         document.add_heading('Work Experience', level=1)
         # Add your work experience, job title, and duration as bullet points
         experiences = data['experiences']
-        for exp in experiences:          
-            document.add_heading(exp['company'] + ', ' + exp['title'], level=2)
-            document.add_paragraph(exp['duration'], style='Normal').style.font.name = 'Arial'
-            document.add_paragraph(exp['description'], style='Normal').style.font.name = 'Arial'
+        for exp in experiences:
+            company = exp['company']
+            title = exp['title']
+            duration = exp['duration']
+            description = exp['description']
+            
+            # Create a heading for the job title and company
+            heading = document.add_heading(company + ', ' + title, level=2)
+            heading.style.font.name = 'Arial'
+            heading.style.font.size = Pt(14)
+            heading.style.font.bold = True
+            
+            # Add the duration and description as a paragraph
+            paragraph = document.add_paragraph(duration + '\n' + description, style='Normal')
+            paragraph.style.font.name = 'Arial'
+
 
     # Add a section for your education
         document.add_heading('Education', level=1)

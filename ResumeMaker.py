@@ -11,6 +11,11 @@ import datetime
 from gtts import gTTS
 import datetime
 from IPython.display import Audio
+import reportlab
+from reportlab.pdfgen import canvas
+from jinja2 import Template
+import json
+import pdfkit 
 
 template = ResumeTemplate()
 AI = CallAI()
@@ -20,11 +25,6 @@ class CreateResume:
     def __init__(self):
         self.data = self.load_data()
     
-
-    
-
-
-
     def convert_docx_to_pdf(self, docx_file, pdf_file):
         doc = docx.Document(docx_file)
         pdfkit.from_string(doc.text, pdf_file)
@@ -39,6 +39,32 @@ class CreateResume:
                 return json.load(f)
         except FileNotFoundError:
             return {}
+
+def html_to_pdf(data):
+        # Load the template
+        with open("template.html", "r") as file:
+            template = Template(file.read())
+
+        # Render the template with the sample input data
+        html = template.render(data=data)
+
+        # Write the HTML code to a file
+        with open("resume.html", "w") as file:
+            file.write(html)
+
+        # Create a canvas object to generate the PDF
+        c = canvas.Canvas("resume.pdf")
+
+        # Load the HTML file and draw it on the canvas
+        c.drawString(72, 720, html)
+
+        # Save the PDF
+        c.save()
+
+        
+        wkhtml_path = pdfkit.configuration(wkhtmltopdf = "C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")  #by using configuration you can add path value.
+        pdfkit.from_file("resume.html", "resume.pdf", configuration = wkhtml_path)
+        #pdfkit.from_url('https://stackoverflow.com/questions/33705368/unable-to-find-wkhtmltopdf-on-this-system-the-report-will-be-shown-in-html', 'C:/Users/Admin/Desktop/Trial1.pdf', configuration = wkhtml_path)
 
 def main():
     resume = CreateResume()
@@ -130,14 +156,14 @@ def main():
         start_date = st.date_input("Start Date", value=datetime.datetime.now())
         end_date = st.date_input("End Date", value=datetime.datetime.now())
         city = st.text_input("City")
-        description = st.text_area("Description")
+        score = st.text_input("CGPA/Percentage")
 
         buttons = st.empty()
         add_edu_button = st.button("Add Education")
         clear_edu_button = st.button("Clear Education")
 
         if add_edu_button:
-            resume.data["education"].append({"school": school, "degree": degree, "start_date": str(start_date.strftime('%b %Y')), "end_date": str(end_date.strftime('%b %Y')), "city": city, "description": description})
+            resume.data["education"].append({"school": school, "degree": degree, "start_date": str(start_date.strftime('%b %Y')), "end_date": str(end_date.strftime('%b %Y')), "city": city, "score": score})
 
         if clear_edu_button:
             resume.data["education"].clear()
@@ -151,7 +177,7 @@ def main():
             st.write(f"Start Date: {start_date.strftime('%b %Y')}")
             st.write(f"End Date: {end_date.strftime('%b %Y')}")
             st.write(f"City: {edu['city']}")
-            st.write(f"Description: {edu['description']}")
+            st.write(f"CGPA/Percentage: {edu['score']}")
             st.write("")
             i += 1
     elif selected_option == "Day Difference Calculator":
@@ -164,30 +190,32 @@ def main():
 
 
 
-    if st.button('Generate Resume'):
-        add_edu_button = st.button("Add Education")
+    if st.button("Generate Resume"):
+        # Generate the resume in PDF format
+        
+        html_to_pdf(data)
+        pdf_file =  current_dir / "resume.pdf"
+        with open(pdf_file, "rb") as pdf_file_handle:
+            pdf_byte = pdf_file_handle.read()
+        st.download_button(
+            label=" 📄 Download pdf Document",
+            data=pdf_byte,
+            file_name=pdf_file.name,
+            mime="application/pdf",
+        )
 
-        try:
-            document = template.CreateResume(data)
-            # Save the document
-            document.save(current_dir /str('output/' + data['Name'] + '_Resume.docx'))
-            st.success("Resume generated successfully!")
-            pdf_file =  current_dir / os.path.join("output", f"{resume.data['Name']}_Resume.pdf")
-            resume_file = current_dir / str('output/' + resume.data['Name'] + '_Resume.docx')
-            with open(resume_file, "rb") as word_file:
-                word_byte = word_file.read()
-            st.download_button(
-                label=" 📄 Download Word Document",
-                data=word_byte,
-                file_name=resume_file.name,
-                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            )
-        except:
-            st.write("You need to go through all categories to create your resume!")
-    if st.button('Clear Data'):
-         resume.data.clear()
-         st.write("All details entered is now cleared from database! Please start to enter details.")
+
+
+    if st.button("Clear Data"):
+        # Clear the stored data
+        resume.data.clear()
+
+        # Show success message
+        st.success("All details entered are now cleared from the database. Please start entering details again.")
+
+    # Save the data
     resume.save_data()
+
 
 if __name__ == "__main__":
     main()
