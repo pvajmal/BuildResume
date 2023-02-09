@@ -21,7 +21,7 @@ template = ResumeTemplate()
 AI = CallAI()
 
 current_dir = Path(__file__)
-st.write(current_dir)
+
 class CreateResume:
     def __init__(self):
         self.data = self.load_data()
