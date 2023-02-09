@@ -23,18 +23,7 @@ import os
 import os
 
 # Define the filename you're searching for
-filename = "wkhtmltopdf.exe"
 
-# Get the current working directory
-cwd = '/home/appuser/'
-
-# Search for the file in the current directory and all subdirectories
-for root, dirs, files in os.walk(cwd):
-    if filename in files:
-        st.write(f"Found {filename} in {root}")
-        break
-    else:
-        st.write(f"{filename} not found")
 
 
 current_dir = Path(__file__)

@@ -1,3 +1,4 @@
+django-wkhtmltopdf
 aiohttp==3.8.3
 gtts
 IPython
