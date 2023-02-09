@@ -21,6 +21,7 @@ template = ResumeTemplate()
 AI = CallAI()
 
 current_dir = Path(__file__).parent
+st.write(current_dir)
 class CreateResume:
     def __init__(self):
         self.data = self.load_data()
@@ -63,7 +64,7 @@ def html_to_pdf(data):
 
         
         #wkhtml_path = pdfkit.configuration(wkhtmltopdf = "C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")  #by using configuration you can add path value.
-        pdfkit.from_file("resume.html", "resume.pdf")
+        pdfkit.from_file("resume.html", "resume.pdf"    )
         #pdfkit.from_url('https://stackoverflow.com/questions/33705368/unable-to-find-wkhtmltopdf-on-this-system-the-report-will-be-shown-in-html', 'C:/Users/Admin/Desktop/Trial1.pdf', configuration = wkhtml_path)
 
 def main():
