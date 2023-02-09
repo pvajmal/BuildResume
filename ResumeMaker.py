@@ -23,7 +23,7 @@ import os
 import os
 
 # Define the filename you're searching for
-st.write(os.listdir("/home/appuser/venv/lib/python3.9/site-packages/django_wkhtmltopdf-3.4.0.dist-info"))
+#st.write(os.listdir("/home/appuser/venv/lib/python3.9/site-packages/django_wkhtmltopdf-3.4.0.dist-info"))
 
 
 current_dir = Path(__file__)
@@ -69,8 +69,8 @@ def html_to_pdf(data):
         c.save()
 
         
-        #wkhtml_path = pdfkit.configuration(wkhtmltopdf = "C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")  #by using configuration you can add path value.
-        pdfkit.from_file("resume.html", "resume.pdf"    )
+        wkhtml_path = pdfkit.configuration(wkhtmltopdf = "/home/appuser/venv/lib/python3.9/site-packages/django_wkhtmltopdf-3.4.0.dist-info/INSTALLER")  #by using configuration you can add path value.
+        pdfkit.from_file("resume.html", "resume.pdf", configuration=wkhtml_path    )
         #pdfkit.from_url('https://stackoverflow.com/questions/33705368/unable-to-find-wkhtmltopdf-on-this-system-the-report-will-be-shown-in-html', 'C:/Users/Admin/Desktop/Trial1.pdf', configuration = wkhtml_path)
 
 def main():
