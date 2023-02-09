@@ -20,7 +20,7 @@ import pdfkit
 template = ResumeTemplate()
 AI = CallAI()
 import os
-st.write(os.listdir('/home/appuser/venv/lib'))
+st.write(os.listdir('/home/appuser/venv/lib/python3.9'))
 current_dir = Path(__file__)
 
 class CreateResume:
