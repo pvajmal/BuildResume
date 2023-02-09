@@ -33,9 +33,9 @@ for root, dirs, files in os.walk(cwd):
     if filename in files:
         st.write(f"Found {filename} in {root}")
         break
-else:
-    st.write(f"{filename} not found")
-    
+    else:
+        st.write(f"{filename} not found")
+
 
 current_dir = Path(__file__)
 
