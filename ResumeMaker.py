@@ -23,7 +23,7 @@ import os
 import os
 
 # Define the filename you're searching for
-st.write(os.listdir("/home/"))
+st.write(os.listdir("/home/appuser"))
 
 
 current_dir = Path(__file__)
