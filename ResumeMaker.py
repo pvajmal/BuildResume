@@ -20,7 +20,22 @@ import pdfkit
 template = ResumeTemplate()
 AI = CallAI()
 import os
-st.write(os.listdir('/home/appuser/venv/lib/python3.9/site-packages/wkhtmltopdf-0.2.dist-info/INSTALLER'))
+import os
+
+# Define the filename you're searching for
+filename = "wkhtmltopdf.exe"
+
+# Get the current working directory
+cwd = os.getcwd()
+
+# Search for the file in the current directory and all subdirectories
+for root, dirs, files in os.walk(cwd):
+    if filename in files:
+        print(f"Found {filename} in {root}")
+        break
+else:
+    print(f"{filename} not found")
+
 current_dir = Path(__file__)
 
 class CreateResume:
