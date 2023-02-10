@@ -114,9 +114,9 @@ def main():
         description = st.text_area("Description")
         call_ai_exp = st.button("Use AI to write job responsibilites based on your input")
         if call_ai_exp:
-            description = (AI.getAI("write compelling job responsibilities in bulletin points to add in resume:" +description))
+            description = (AI.getAI("write standard job responsibilities in bulletin points to add in resume using" +description))
             st.write(description)
-        buttons = st.empty()
+        #buttons = st.empty()
         add_exp_button = st.button("Add Experience")
         clear_exp_button = st.button("Clear Experience")
 
