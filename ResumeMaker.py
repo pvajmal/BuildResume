@@ -4,7 +4,6 @@ import streamlit as st
 import docx
 import pdfkit
 from pathlib import Path
-from DocxTemplate import ResumeTemplate
 from openAI import CallAI
 import re
 import datetime
@@ -14,10 +13,8 @@ from IPython.display import Audio
 import reportlab
 from reportlab.pdfgen import canvas
 from jinja2 import Template
-import json
-import pdfkit 
 
-template = ResumeTemplate()
+
 AI = CallAI()
 
 current_dir = Path(__file__).parent
@@ -41,36 +38,36 @@ class CreateResume:
             return {}
 
 def html_to_pdf(data):
-        # Load the template
-        with open("template.html", "r") as file:
-            template = Template(file.read())
+    # Load the template
+    with open("template.html", "r") as file:
+        template = Template(file.read())
 
-        # Render the template with the sample input data
-        html = template.render(data=data)
+    # Render the template with the sample input data
+    html = template.render(data=data)
 
-        # Write the HTML code to a file
-        with open("resume.html", "w") as file:
-            file.write(html)
+    # Write the HTML code to a file
+    with open("resume.html", "w") as file:
+        file.write(html)
 
-        # Create a canvas object to generate the PDF
-        c = canvas.Canvas("resume.pdf")
+    # Create a canvas object to generate the PDF
+    c = canvas.Canvas("resume.pdf")
 
-        # Load the HTML file and draw it on the canvas
-        c.drawString(72, 720, html)
+    # Load the HTML file and draw it on the canvas
+    c.drawString(72, 720, html)
 
-        # Save the PDF
-        c.save()
+    # Save the PDF
+    c.save()
 
-        
-        #wkhtml_path = pdfkit.configuration(wkhtmltopdf = "C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")  #by using configuration you can add path value.
-        pdfkit.from_file("resume.html", "resume.pdf")
-        #pdfkit.from_url('https://stackoverflow.com/questions/33705368/unable-to-find-wkhtmltopdf-on-this-system-the-report-will-be-shown-in-html', 'C:/Users/Admin/Desktop/Trial1.pdf', configuration = wkhtml_path)
+    
+    wkhtml_path = pdfkit.configuration(wkhtmltopdf = "C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")  #by using configuration you can add path value.
+    pdfkit.from_file("resume.html", "resume.pdf", configuration= wkhtml_path)
+    #pdfkit.from_url('https://stackoverflow.com/questions/33705368/unable-to-find-wkhtmltopdf-on-this-system-the-report-will-be-shown-in-html', 'C:/Users/Admin/Desktop/Trial1.pdf', configuration = wkhtml_path)
 
 def main():
     resume = CreateResume()
     data = resume.load_data()
     st.set_page_config(page_icon="📑", page_title="Resume Generator")
-    options = ["Basic Details", "Experience", "Academic Info", "Skills & Achievements","Ask AI", "Day Difference Calculator"]
+    options = ["Basic Details", "Experience", "Academic Info", "Skills, Achievements etc.","Ask AI", "Day Difference Calculator"]
     selected_option = st.radio("Select Category", options)
 
     def is_valid_email(email):
@@ -102,51 +99,50 @@ def main():
         Q_AI = st.text_area("Ask me question!")
         call_ai_q = st.button("ASK")
         if call_ai_q:
-            st.write(tts(AI.getAI("answer following question "+ Q_AI)))
-    elif selected_option == "Experience":
-        
+            AI_response = AI.getAI("answer following question "+ Q_AI)
+            st.write(tts(AI_response))
+            st.write(AI_response)
+    elif selected_option == "Experience":            
+        if "experiences" not in resume.data:
+            resume.data["experiences"] = []
+        title = st.text_input("Title")
+        company = st.text_input("Company")
+        start_date = st.date_input("Start Date", value=datetime.datetime.now())
+        end_date = st.date_input("End Date", value=datetime.datetime.now())
+        description = st.text_area("Description")
+        call_ai_exp = st.button("Use AI to write job responsibilites based on your input")
+        if call_ai_exp:
+            description = (AI.getAI("Make following text to add in job responsibilities section in  resume:" +description))
+            st.write(description)
+        buttons = st.empty()
+        add_exp_button = st.button("Add Experience")
+        clear_exp_button = st.button("Clear Experience")
 
-        if selected_option == "Experience":
-                
-            if "experiences" not in resume.data:
-                resume.data["experiences"] = []
-            title = st.text_input("Title")
-            company = st.text_input("Company")
-            start_date = st.date_input("Start Date", value=datetime.datetime.now())
-            end_date = st.date_input("End Date", value=datetime.datetime.now())
-            description = st.text_area("Description")
-            call_ai_exp = st.button("Use AI to write job responsibilites based on your input")
-            if call_ai_exp:
-                description = (AI.getAI("Make following text to add in job responsibilities section in  resume:" +description))
-                st.write(description)
-            buttons = st.empty()
-            add_exp_button = st.button("Add Experience")
-            clear_exp_button = st.button("Clear Experience")
+        if add_exp_button:
+            resume.data["experiences"].append({"title": title, "company": company, "duration": str(start_date.strftime('%b %Y'))+ " - "+ str(end_date.strftime('%b %Y')), "description": description})
 
-            if add_exp_button:
-                resume.data["experiences"].append({"title": title, "company": company, "duration": str(start_date.strftime('%b %Y'))+ " - "+ str(end_date.strftime('%b %Y')), "description": description})
+        if clear_exp_button:
+            resume.data["experiences"].clear()
 
-            if clear_exp_button:
-                resume.data["experiences"].clear()
-
-            st.write("Current Experiences:")
-            i = 1
-            for exp in resume.data["experiences"]:
-                st.write(f"Experience {i}:")
-                st.write(f"Title: {exp['title']}")
-                st.write(f"Company: {exp['company']}")
-                st.write(f"Duration: {start_date.strftime('%b %Y')} - {end_date.strftime('%b %Y')}")
-                st.write(f"Description: {exp['description']}")
-                st.write("")
-                i += 1
-        
-    elif selected_option == "Skills & Achievements":
+        st.write("Current Experiences:")
+        i = 1
+        for exp in resume.data["experiences"]:
+            st.write(f"Experience {i}:")
+            st.write(f"Title: {exp['title']}")
+            st.write(f"Company: {exp['company']}")
+            st.write(f"Duration: {start_date.strftime('%b %Y')} - {end_date.strftime('%b %Y')}")
+            st.write(f"Description: {exp['description']}")
+            st.write("")
+            i += 1
+    
+    elif selected_option == "Skills, Achievements etc.":
         resume.data["Skills"] = st.text_input("Enter your skills:")
         call_ai_skill = st.button("Use AI to write skills based on your input")
         if call_ai_skill:
              resume.data["Skills"]  = (AI.getAI("Please convert the following skills into bullet points for my resume: "+ resume.data["Skills"] ))
              st.write(resume.data["Skills"])
         resume.data["Achievement"] = st.text_area("Enter your achievements:")
+        resume.data["certifications"] = st.text_area("Enter details of your Certifications or Learnings")
     elif selected_option == "Academic Info":
         if "education" not in resume.data:
             resume.data["education"] = []
@@ -203,8 +199,6 @@ def main():
             file_name=pdf_file.name,
             mime="application/pdf",
         )
-
-
 
     if st.button("Clear Data"):
         # Clear the stored data

@@ -12,7 +12,7 @@
       font-size: 14px;
       line-height: 1.5;
       color: #333;
-      padding: 20px;
+      padding: 0px;
     }
     h1, h2, h3 {
       font-family: Arial;
@@ -34,6 +34,8 @@
     }
     .header {
       text-align: center;
+      margin-top: 5px;
+      margin-bottom: 5px;
     }
     .section-header {
       font-size: 18px;
@@ -44,6 +46,10 @@
       float: right;
       font-style: italic;
       font-size: 14px;
+    }
+    .blue-text {
+        color: blue;
+        text-decoration: none;
     }
     .experience {
       margin-bottom: 20px;
@@ -67,19 +73,17 @@
   <div class="header">
     <h1>{{ data['Name'] }}</h1>
     <p>{{ data['Address'] }}</p>
-    <p>{{ data['Email'] }} | {{ data['Phone'] }} | {{ data['LinkedIn'] }}</p>
+    <p>
+        <a href="mailto:{{ data['Email'] }}">
+          <span style="color: rgba(89, 89, 240, 0.947); text-decoration: none;">{{ data['Email'] }}</span>
+        </a>
+        ⋄ {{ data['Phone'] }} ⋄ {{ data['LinkedIn'] }}
+      </p>
   </div>
-  <h2 class="section-header">Summary</h2>
+  <h2 class="section-header">OBJECTIVE</h2>
   <p>{{ data['Objective'] }}</p>
-  <h2 class="section-header">Work Experience</h2>
-  {% for exp in data['experiences'] %}
-    <div class="experience">
-        <p class="right-aligned-italic">{{ exp['duration'] }}</p>
-      <h3>{{ exp['company'] }} | {{ exp['title'] }}</h3>
-      <p>{{ exp['description'] }}</p>
-    </div>
-  {% endfor %}
-  <h2 class="section-header">Education</h2>
+
+  <h2 class="section-header">EDUCATION</h2>
   <table>
     <thead>
       <tr>
@@ -102,15 +106,22 @@
       {% endfor %}
     </tbody>
   </table>
-
   {% if data['Skills'] %}
-  <h2 class="section-header">Skills</h2>
+  <h2 class="section-header">SKILLS</h2>
 
 
     <p>{{ data['Skills']}}</p>
 
-{% endif %}
+    {% endif %}
 
+  <h2 class="section-header">EXPERIENCE</h2>
+  {% for exp in data['experiences'] %}
+    <div class="experience">
+        <p class="right-aligned-italic">{{ exp['duration'] }}</p>
+      <h3>{{ exp['company'] }} | {{ exp['title'] }}</h3>
+      <p>{{ exp['description'] }}</p>
+    </div>
+  {% endfor %}
 
   {% if data['Achievement'] %}
   <h2 class="section-header">Achievements</h2>
@@ -121,11 +132,7 @@
 
 {% if data['certifications'] %}
   <h2 class="section-header">Certifications/Learnings</h2>
-  <ul>
-    {% for certification in data['certifications'] %}
-      <li>{{ certification }}</li>
-    {% endfor %}
-  </ul>
+  <p>{{data['certifications']}}</p>
 {% endif %}
 
 </body>
