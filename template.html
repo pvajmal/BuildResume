@@ -77,9 +77,13 @@
         <a href="mailto:{{ data['Email'] }}">
           <span style="color: rgba(89, 89, 240, 0.947); text-decoration: none;">{{ data['Email'] }}</span>
         </a>
-        ⋄ {{ data['Phone'] }} ⋄ {{ data['LinkedIn'] }}
+        ⋄ <a href="tel:{{ data['Phone'] }}">{{ data['Phone'] }}</a>
+        {% if data['LinkedIn'] %}
+          ⋄ <a href="{{ data['LinkedIn'] }}">{{ data['LinkedIn'] }}</a>
+        {% endif %}
       </p>
   </div>
+
   <h2 class="section-header">OBJECTIVE</h2>
   <p>{{ data['Objective'] }}</p>
 
