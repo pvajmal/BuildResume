@@ -156,7 +156,7 @@ def main():
             remove_achievement = st.button("Remove",  key=f"remove_achievement_{i}")
             if remove_achievement and len(resume.data["achievements"])>=1:
                 resume.data["achievements"].pop()
-            
+                i -= 1
             if not add_achievement:
                 break
 
