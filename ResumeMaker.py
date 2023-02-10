@@ -70,7 +70,7 @@ def main():
     data = resume.load_data()
     st.set_page_config(page_icon="📑", page_title="Resume Generator")
     options = ["Basic Details", "Experience", "Academic Info", "Skills, Achievements etc.","Ask AI", "Day Difference Calculator"]
-    selected_option = st.radio("Select Category", options)
+    selected_option = st.sidebar.selectbox("Select Category", options)
 
     def is_valid_email(email):
         pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
