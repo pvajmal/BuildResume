@@ -58,9 +58,11 @@ def html_to_pdf(data):
     # Save the PDF
     c.save()
 
-    
-    wkhtml_path = pdfkit.configuration(wkhtmltopdf = "C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")  #by using configuration you can add path value.
-    pdfkit.from_file("resume.html", "resume.pdf", configuration= wkhtml_path)
+    try:
+        wkhtml_path = pdfkit.configuration(wkhtmltopdf = "C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")  #by using configuration you can add path value.
+        pdfkit.from_file("resume.html", "resume.pdf", configuration= wkhtml_path)
+    except:
+        pdfkit.from_file("resume.html", "resume.pdf")
     #pdfkit.from_url('https://stackoverflow.com/questions/33705368/unable-to-find-wkhtmltopdf-on-this-system-the-report-will-be-shown-in-html', 'C:/Users/Admin/Desktop/Trial1.pdf', configuration = wkhtml_path)
 
 def main():
