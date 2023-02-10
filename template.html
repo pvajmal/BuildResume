@@ -121,23 +121,36 @@
   <h2 class="section-header">EXPERIENCE</h2>
   {% for exp in data['experiences'] %}
     <div class="experience">
-        <p class="right-aligned-italic">{{ exp['duration'] }}</p>
+        <p class="right-aligned-italic" style="float:right; width: 10%; ">{{ exp['duration'] }}</p>
       <h3>{{ exp['company'] }} | {{ exp['title'] }}</h3>
       <p>{{ exp['description'] }}</p>
     </div>
   {% endfor %}
 
-  {% if data['Achievement'] %}
-  <h2 class="section-header">Achievements</h2>
+  {% if data['achievements'] %}
+    <h2 class="section-header">ACHIEVEMENTS</h2>
+    {% for achievement in data['achievements'] %}
+      <div class="achievement">
+        <h4 class="achievement-place" style="float:left; width: 10%; text-align:center;">{{ achievement.place }}</h4>
+        <p class="achievement-description" style="float:left; width: 40%;">{{ achievement.description }}</p>  
+        <p class="right-aligned-italic" style="float:right; width: 10%; text-align:right;">{{ achievement.date }}</p>
+        <div style="clear:both;"></div>
+      </div>
+    {% endfor %}
+  {% endif %}
 
-    <p>{{ data['Achievement']}}</p>
 
-{% endif %}
-
-{% if data['certifications'] %}
-  <h2 class="section-header">Certifications/Learnings</h2>
-  <p>{{data['certifications']}}</p>
-{% endif %}
+    {% if data['certifications'] %}
+    <h2 class="section-header">CERTIFICATIONS/LEARNINGS</h2>
+    {% for certification in data['certifications'] %}
+    <div class="certification">
+    <h4 class="certification-place" style="float:left; width: 10%; text-align:center;">{{ certification.place }}</h4>
+    <p class="certification-description" style="float:left; width: 40%;">{{ certification.description }}</p>
+    <p class="right-aligned-italic" style="float:right; width: 10%; text-align:right;">{{ certification.date }}</p>
+    <div style="clear:both;"></div>
+    </div>
+    {% endfor %}
+    {% endif %}
 
 </body>
 </html>

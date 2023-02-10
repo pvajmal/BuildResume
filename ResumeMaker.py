@@ -139,12 +139,55 @@ def main():
     
     elif selected_option == "Skills, Achievements etc.":
         resume.data["Skills"] = st.text_input("Enter your skills:")
-        call_ai_skill = st.button("Use AI to write skills based on your input")
-        if call_ai_skill:
-             resume.data["Skills"]  = (AI.getAI("Please convert the following skills into bullet points for my resume: "+ resume.data["Skills"] ))
-             st.write(resume.data["Skills"])
-        resume.data["Achievement"] = st.text_area("Enter your achievements:")
-        resume.data["certifications"] = st.text_area("Enter details of your Certifications or Learnings")
+        if "achievements" not in resume.data:
+            resume.data["achievements"] = []
+        
+        i = len(resume.data["achievements"])
+        while True:
+            st.write("Achievement #", len(resume.data["achievements"]) + 1)
+            dateAchievement = st.date_input("Enter the date:", key=f'dateAchievement_{i}')
+            placeAchievement = st.text_input("Enter the place:", key=f'placeAchievement_{i}')
+            descriptionAchievement = st.text_area("Enter a description:", key=f'descriptionAchievement_{i}')
+
+            add_achievement = st.button("Add", key=f"add_achievement_{i}")
+            if add_achievement:
+                resume.data["achievements"].append({"date": dateAchievement.strftime('%b %Y'), "place":placeAchievement, "description": descriptionAchievement})
+
+            remove_achievement = st.button("Remove",  key=f"remove_achievement_{i}")
+            if remove_achievement and len(resume.data["achievements"])>=1:
+                resume.data["achievements"].pop()
+            
+            if not add_achievement:
+                break
+
+            i += 1
+        
+        
+
+        if "certifications" not in resume.data:
+            resume.data["certifications"] = []
+        j = 0
+        while True:
+            st.write("Certification #", len(resume.data["certifications"]) + 1)
+            dateCertification = st.date_input("Enter the date:", key=f'dateCertification_{j}')
+            placeCertification = st.text_input("Enter the place:", key=f'placeCertification_{j}')
+            descriptionCertification = st.text_area("Enter a description:", key=f'descriptionCertification_{j}')
+
+            add_certification = st.button("Add", key=f"add_certification_{j}")
+            if add_certification:
+                resume.data['certifications'].append({"date": dateCertification.strftime('%b %Y'), "place":placeCertification, "description": descriptionCertification})
+
+            remove_certification = st.button("Remove",  key=f"remove_certification_{j}")
+            if remove_certification and len(resume.data['certifications']) >= 0:
+                certifications.pop()
+            
+            if not add_certification:
+                break
+
+            j += 1
+
+        
+
     elif selected_option == "Academic Info":
         if "education" not in resume.data:
             resume.data["education"] = []
