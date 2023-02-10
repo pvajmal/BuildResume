@@ -179,7 +179,7 @@ def main():
 
             remove_certification = st.button("Remove",  key=f"remove_certification_{j}")
             if remove_certification and len(resume.data['certifications']) >= 0:
-                certifications.pop()
+                resume.data['certifications'].pop()
             
             if not add_certification:
                 break
