@@ -121,7 +121,7 @@
   <h2 class="section-header">EXPERIENCE</h2>
   {% for exp in data['experiences'] %}
     <div class="experience">
-        <p class="right-aligned-italic" style="float:right; width: 10%; ">{{ exp['duration'] }}</p>
+        <p class="right-aligned-italic">{{ exp['duration'] }}</p>
       <h3>{{ exp['company'] }} | {{ exp['title'] }}</h3>
       <p>{{ exp['description'] }}</p>
     </div>
@@ -131,7 +131,7 @@
     <h2 class="section-header">ACHIEVEMENTS</h2>
     {% for achievement in data['achievements'] %}
       <div class="achievement">
-        <h4 class="achievement-place" style="float:left; width: 10%; text-align:center;">{{ achievement.place }}</h4>
+        <p class="achievement-place" style="float:left; width: 10%; text-align:center;">{{ achievement.place }}</P>
         <p class="achievement-description" style="float:left; width: 40%;">{{ achievement.description }}</p>  
         <p class="right-aligned-italic" style="float:right; width: 10%; text-align:right;">{{ achievement.date }}</p>
         <div style="clear:both;"></div>
