@@ -131,7 +131,7 @@
     <h2 class="section-header">ACHIEVEMENTS</h2>
     {% for achievement in data['achievements'] %}
       <div class="achievement">
-        <p class="achievement-place" style="float:left; width: 10%; text-align:center;">{{ achievement.place }}</P>
+        <p class="achievement-place" style="float:left; width: 10%; text-align:center;">{{ achievement.place }}</p>
         <p class="achievement-description" style="float:left; width: 40%;">{{ achievement.description }}</p>  
         <p class="right-aligned-italic" style="float:right; width: 10%; text-align:right;">{{ achievement.date }}</p>
         <div style="clear:both;"></div>
@@ -144,7 +144,7 @@
     <h2 class="section-header">CERTIFICATIONS/LEARNINGS</h2>
     {% for certification in data['certifications'] %}
     <div class="certification">
-    <h4 class="certification-place" style="float:left; width: 10%; text-align:center;">{{ certification.place }}</h4>
+    <p class="certification-place" style="float:left; width: 10%; text-align:center;">{{ certification.place }}</p>
     <p class="certification-description" style="float:left; width: 40%;">{{ certification.description }}</p>
     <p class="right-aligned-italic" style="float:right; width: 10%; text-align:right;">{{ certification.date }}</p>
     <div style="clear:both;"></div>
