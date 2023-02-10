@@ -116,7 +116,7 @@ def main():
         if call_ai_exp:
             description = (AI.getAI("write standard job responsibilities in bulletin points to add in resume using" +description))
             st.write(description)
-        #buttons = st.empty()
+        buttons = st.empty()
         add_exp_button = st.button("Add Experience")
         clear_exp_button = st.button("Clear Experience")
 
