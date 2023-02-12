@@ -69,7 +69,7 @@ def main():
     resume = CreateResume()
     data = resume.load_data()
     st.set_page_config(page_icon="📑", page_title="Resume Generator")
-    options = ["Basic Details", "Experience", "Academic Info", "Skills, Achievements etc.","Ask Adnan", "Day Difference Calculator"]
+    options = ["Basic Details", "Experience", "Academic Info", "Skills, Achievements etc.","Ask AI", "Day Difference Calculator"]
     selected_option = st.sidebar.selectbox("Select Category", options)
 
     def is_valid_email(email):
@@ -92,13 +92,13 @@ def main():
              resume.data["Objective"] = AI.getAI("Please craft a compelling and relevant career objective using the following information: "+ resume.data["Objective"])
              st.write(resume.data["Objective"])
         st.write("")
-    elif selected_option == "Ask Adnan":
+    elif selected_option == "Ask AI":
         def tts(text):
             tts = gTTS(text)
             tts.save("tts.mp3")
             return Audio("tts.mp3", autoplay=True)
         
-        Q_AI = st.text_area("Ask me question Adnan!")
+        Q_AI = st.text_area("Ask me a question!")
         call_ai_q = st.button("ASK")
         if call_ai_q:
             AI_response = AI.getAI("answer following question "+ Q_AI)
