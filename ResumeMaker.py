@@ -98,7 +98,7 @@ def main():
             tts.save("tts.mp3")
             return Audio("tts.mp3", autoplay=True)
         
-        Q_AI = st.text_area("Ask me question!")
+        Q_AI = st.text_area("Ask me question Adnan!")
         call_ai_q = st.button("ASK")
         if call_ai_q:
             AI_response = AI.getAI("answer following question "+ Q_AI)
