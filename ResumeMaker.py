@@ -98,7 +98,7 @@ def main():
             tts.save("tts.mp3")
             return Audio("tts.mp3", autoplay=True)
         
-        Q_AI = st.text_area("Ask me question!")
+        Q_AI = st.text_area("Ask me a question!")
         call_ai_q = st.button("ASK")
         if call_ai_q:
             AI_response = AI.getAI("answer following question "+ Q_AI)
@@ -156,7 +156,7 @@ def main():
             remove_achievement = st.button("Remove",  key=f"remove_achievement_{i}")
             if remove_achievement and len(resume.data["achievements"])>=1:
                 resume.data["achievements"].pop()
-            
+                i -= 1
             if not add_achievement:
                 break
 
